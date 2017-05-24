@@ -32,7 +32,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import static minetweaker.api.minecraft.MineTweakerMC.*;
 
-@ZenClass("mods.VCTweaker")
+@ZenClass("mods.vctweaker")
 public class TweakerIntegration {
 
     private static boolean matches(Object input, IIngredient ingredient) {

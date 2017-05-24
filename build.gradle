@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.0"
+version = "1.11.2-1.0"
 group = "se.gorymoon.vctweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ViesCraftTweaker"
 
@@ -93,10 +93,23 @@ processResources {
     }
 }
 
+task devJar(type: Jar, dependsOn: 'classes') {
+    from(sourceSets.main.output) {
+        include '**'
+    }
+
+    extension = 'jar'
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+    archives sourceJar
+}
+
 jar {
     manifest {
         attributes 'FMLCorePlugin': 'se.gorymoon.vctweaker.asm.LoadingPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
-    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
