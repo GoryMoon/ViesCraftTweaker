@@ -1,0 +1,16 @@
+[
+{
+  "modid": "vctweaker",
+  "name": "ViesCraft Tweaker",
+  "description": "A mod that adds CraftTweaker functionality and modifies some things to ViesCraft",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["GoryMoon"],
+  "credits": "Viesis - The author of ViesCraft",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
