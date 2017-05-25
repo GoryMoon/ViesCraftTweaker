@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * The base setup of this class is by hilburn
+ * It's a very nice way of setting up the transformer
  */
 public class VCTransformer implements IClassTransformer, Opcodes {
 
@@ -73,13 +74,25 @@ public class VCTransformer implements IClassTransformer, Opcodes {
                 return list;
             }
         },
+        REPLACE_FUELHANDLING("getItemBurnTime", "(Lnet/minecraft/item/ItemStack;)I") {
+            @Override
+            protected InsnList modifyInstructions(InsnList list) {
+                list.clear();
+                list.add(new LabelNode());
+                list.add(new VarInsnNode(ALOAD, 0));
+                list.add(new MethodInsnNode(INVOKESTATIC, "se/gorymoon/vctweaker/fuel/FuelHandler", "getItemBurnTime", "(Lnet/minecraft/item/ItemStack;)I", false));
+                list.add(new InsnNode(IRETURN));
+                list.add(new LabelNode());
+                return list;
+            }
+        },
         /**
          * Helper for printing the structure of a method
          * First parameter is the method name and second is the description of it
          * Change the boolean printCompact for either all code easily copy and pastable to somewhere else
          * or separated with the name of the class to use for the specific call
          */
-        PRINT("register", "(Lmezz/jei/api/IModRegistry;)V") {
+        PRINT("getItemBurnTime", "(Lnet/minecraft/item/ItemStack;)I") {
             private Printer printer;
             private TraceMethodVisitor mp;
 
@@ -307,7 +320,11 @@ public class VCTransformer implements IClassTransformer, Opcodes {
     private enum ClassName
     {
         JEI_PLUGIN("com.viesis.viescraft.api.jei.JEIPlugin", Transformer.REPLACE_JEI),
-        GUI_WORKBENCH("com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench", Transformer.REMOVE_WORKBENCH_R_CLOSING);
+        GUI_WORKBENCH("com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench", Transformer.REMOVE_WORKBENCH_R_CLOSING),
+        AIRSHIP_V1("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV1Core", Transformer.REPLACE_FUELHANDLING),
+        AIRSHIP_V2("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV2Core", Transformer.REPLACE_FUELHANDLING),
+        AIRSHIP_V3("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV3Core", Transformer.REPLACE_FUELHANDLING),
+        AIRSHIP_V4("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV4Core", Transformer.REPLACE_FUELHANDLING);
 
         private String name;
         private Transformer[] transformers;

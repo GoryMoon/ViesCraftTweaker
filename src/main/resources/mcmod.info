@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["GoryMoon"],
   "credits": "Viesis - The author of ViesCraft",
-  "logoFile": "",
+  "logoFile": "assets/vctweaker/textures/logo.png",
   "screenshots": [],
   "dependencies": []
 }
