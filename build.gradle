@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
     }
@@ -7,12 +8,18 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+
+apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
+configurations {
+    deployerJars
+}
 
-version = "1.11.2-1.1"
-group = "se.gorymoon.vctweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "${mc_version}-${mod_version}.${System.getenv("BUILD_NUMBER") ?: local_build}"
+group = "se.gory_moon.vctweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ViesCraftTweaker"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
@@ -21,7 +28,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2303"
+    version = "${mc_version}-${forge_version}"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -31,6 +38,9 @@ minecraft {
     // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "snapshot_20161220"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    replaceIn "VCTweaker.java"
+    replace "@MOD_VERSION@", mod_version
 }
 
 repositories {
@@ -47,6 +57,8 @@ repositories {
 }
 
 dependencies {
+    deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -76,7 +88,7 @@ dependencies {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
+    inputs.property "version", mod_version + ".${System.getenv("BUILD_NUMBER") ?: local_build}"
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -84,7 +96,7 @@ processResources {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': mod_version + ".${System.getenv("BUILD_NUMBER") ?: local_build}", 'mcversion':project.minecraft.version
     }
         
     // copy everything else except the mcmod.info
@@ -109,7 +121,63 @@ artifacts {
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'se.gorymoon.vctweaker.asm.LoadingPlugin'
+        attributes 'FMLCorePlugin': 'se.gory_moon.vctweaker.asm.ViesCraftTweakerCore'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
+uploadArchives {
+    if (project.hasProperty("maven_url")) {
+        repositories {
+            mavenDeployer {
+                println 'Publishing to files server'
+
+                configuration = configurations.deployerJars
+                repository(url: project.maven_url) {
+                    authentication(userName: project.maven_username, password: project.maven_password)
+                }
+                pom {
+                    groupId = project.group
+                    version = project.version
+                    artifactId = project.archivesBaseName
+                }
+
+                pom.project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'ViesCraftTweaker'
+                    url 'https://github.com/GoryMoon/ViesCraftTweaker/'
+
+                    scm {
+                        url 'https://github.com/GoryMoon/ViesCraftTweaker/'
+                        connection 'scm:git:git://github.com/GoryMoon/ViesCraftTweaker.git'
+                        developerConnection 'scm:git:git@github.com/GoryMoon/ViesCraftTweaker.git'
+                    }
+
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/GoryMoon/GlobalGameRules/issues'
+                    }
+
+                    licenses {
+                        license {
+                            name 'GNU Lesser General Public License 3.0'
+                            url 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'Gory_Moon'
+                            name 'Gory_Moon'
+                            roles {
+                                role 'developer'
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
