@@ -19,7 +19,7 @@ configurations {
 }
 
 version = "${mc_version}-${mod_version}.${System.getenv("BUILD_NUMBER") ?: local_build}"
-group = "se.gory_moon.vctweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "se.gory_moon" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ViesCraftTweaker"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
