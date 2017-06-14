@@ -130,12 +130,17 @@ uploadArchives {
     if (project.hasProperty("maven_url")) {
         repositories {
             mavenDeployer {
-                println 'Publishing to files server'
+                if (project.hasProperty("maven_url")) {
+                    logger.info('Publishing to files server')
+                    configuration = configurations.deployerJars
 
-                configuration = configurations.deployerJars
-                repository(url: project.maven_url) {
-                    authentication(userName: project.maven_username, password: project.maven_password)
+                    repository(url: project.maven_url) {
+                        authentication(userName: project.maven_username ?: "", password: project.maven_password ?: "")
+                    }
+                } else if (project.hasProperty("local_maven")) {
+                    repository(url: "file://${project.getProperty('local_maven')}")
                 }
+
                 pom {
                     groupId = project.group
                     version = project.version
