@@ -1,5 +1,5 @@
 package se.gory_moon.vctweaker.jei.wrappers;
-
+/*
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
@@ -25,7 +25,7 @@ public class ShapedOreRecipeWrapper extends BlankRecipeWrapper implements IShape
 		IStackHelper stackHelper = jeiHelpers.getStackHelper();
 		ItemStack recipeOutput = recipe.getRecipeOutput();
 
-		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(Arrays.asList(recipe.getInput()));
+		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(recipe.getIngredients());
 		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutput(ItemStack.class, recipeOutput);
 	}
@@ -41,3 +41,4 @@ public class ShapedOreRecipeWrapper extends BlankRecipeWrapper implements IShape
 	}
 
 }
+*/

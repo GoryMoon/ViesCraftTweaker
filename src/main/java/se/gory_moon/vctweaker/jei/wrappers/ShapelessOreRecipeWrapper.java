@@ -1,5 +1,5 @@
 package se.gory_moon.vctweaker.jei.wrappers;
-
+/*
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
@@ -11,6 +11,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import java.util.List;
 
 public class ShapelessOreRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper {
+
 	private final IJeiHelpers jeiHelpers;
 	private final ShapelessOreRecipe recipe;
 
@@ -24,8 +25,9 @@ public class ShapelessOreRecipeWrapper extends BlankRecipeWrapper implements IRe
 		IStackHelper stackHelper = jeiHelpers.getStackHelper();
 		ItemStack recipeOutput = recipe.getRecipeOutput();
 
-		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(recipe.getInput());
+		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(recipe.getIngredients());
 		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutput(ItemStack.class, recipeOutput);
 	}
 }
+*/

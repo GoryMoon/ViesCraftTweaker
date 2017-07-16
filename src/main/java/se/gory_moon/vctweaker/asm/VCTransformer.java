@@ -24,7 +24,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
 
     private enum TransformType
     {
-        METHOD, FIELD, INNER_CLASS, MODIFY, MAKE_PUBLIC, DELETE
+        METHOD, FIELD, INNER_CLASS, MODIFY, MAKE_PUBLIC, DELETE, ADD
     }
 
     private enum Transformer
@@ -84,6 +84,29 @@ public class VCTransformer implements IClassTransformer, Opcodes {
                 return list;
             }
         },
+        FIX_NO_GUI_TOOLTIP(FMLForgePlugin.RUNTIME_DEOBF ? "func_73863_a": "drawScreen", "(IIF)V", TransformType.METHOD, TransformType.ADD) {
+            @Override
+            protected InsnList modifyInstructions(InsnList list) {
+                list.add(new LabelNode());
+                list.add(new VarInsnNode(ALOAD, 0));
+                list.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/client/gui/inventory/GuiContainer", FMLForgePlugin.RUNTIME_DEOBF ? "func_146276_q_ ": "drawDefaultBackground", "()V", false));
+                list.add(new LabelNode());
+                list.add(new VarInsnNode(ALOAD, 0));
+                list.add(new VarInsnNode(ILOAD, 1));
+                list.add(new VarInsnNode(ILOAD, 2));
+                list.add(new VarInsnNode(FLOAD, 3));
+                list.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/client/gui/inventory/GuiContainer", FMLForgePlugin.RUNTIME_DEOBF ? "func_73863_a": "drawScreen", "(IIF)V", false));
+                list.add(new LabelNode());
+                list.add(new VarInsnNode(ALOAD, 0));
+                list.add(new VarInsnNode(ILOAD, 1));
+                list.add(new VarInsnNode(ILOAD, 2));
+                list.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/client/gui/inventory/GuiContainer", FMLForgePlugin.RUNTIME_DEOBF ? "func_191948_b": "renderHoveredToolTip", "(II)V", false));
+                list.add(new LabelNode());
+                list.add(new InsnNode(RETURN));
+                list.add(new LabelNode());
+                return list;
+            }
+        },
         REPLACE_FUELHANDLING("getItemBurnTime", "(Lnet/minecraft/item/ItemStack;)I") {
             @Override
             protected InsnList modifyInstructions(InsnList list) {
@@ -102,7 +125,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
          * Change the boolean printCompact for either all code easily copy and pastable to somewhere else
          * or separated with the name of the class to use for the specific call
          */
-        PRINT("register", "(Lmezz/jei/api/IModRegistry;)V") {
+        PRINT("drawScreen", "(IIF)V") {
             private Printer printer;
             private TraceMethodVisitor mp;
 
@@ -184,10 +207,14 @@ public class VCTransformer implements IClassTransformer, Opcodes {
         protected void methodTransform(ClassNode node)
         {
             MethodNode methodNode = getMethod(node);
-            if (methodNode != null)
-            {
-                switch (action)
-                {
+            if (methodNode == null && action == TransformType.ADD) {
+                methodNode = new MethodNode(ASM5, ACC_PUBLIC, name, args, null, null);
+                node.methods.add(methodNode);
+            }
+
+            if (methodNode != null) {
+                switch (action) {
+                    case ADD:
                     case MODIFY:
                         methodNode.instructions = modifyInstructions(methodNode.instructions);
                         break;
@@ -329,8 +356,22 @@ public class VCTransformer implements IClassTransformer, Opcodes {
 
     private enum ClassName
     {
-        JEI_PLUGIN("com.viesis.viescraft.api.jei.JEIPlugin", Transformer.REPLACE_JEI),
-        GUI_WORKBENCH("com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench", Transformer.REMOVE_WORKBENCH_R_CLOSING),
+        //TEST("se.gory_moon.vctweaker.TestGuiContainer", Transformer.PRINT),
+        GUI_WORKBENCH("com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench", Transformer.FIX_NO_GUI_TOOLTIP, Transformer.REMOVE_WORKBENCH_R_CLOSING),
+        GUI_AIRSHIP_DEFAULT("com.viesis.viescraft.client.gui.airship.GuiAirshipDefaultInterface", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MUSIC_1("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg1", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MUSIC_2("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg2", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MUSIC_3("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg3", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MUSIC_4("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg4", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MODULE_INV("com.viesis.viescraft.client.gui.airship.modules.GuiModuleInventorySmall", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MODULE_INV_LARGE("com.viesis.viescraft.client.gui.airship.modules.GuiModuleInventoryLarge", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MODULE_JUKEBOX("com.viesis.viescraft.client.gui.airship.modules.GuiModuleJukebox", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_MODULE_SOCKET("com.viesis.viescraft.client.gui.airship.modules.GuiModuleSocket", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_APP_1("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg1", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_APP_2("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg2", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_APP_3("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg3", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_APP_4("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg4", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_APP_5("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg5", Transformer.FIX_NO_GUI_TOOLTIP),
         AIRSHIP_V1("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV1Core", Transformer.REPLACE_FUELHANDLING),
         AIRSHIP_V2("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV2Core", Transformer.REPLACE_FUELHANDLING),
         AIRSHIP_V3("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV3Core", Transformer.REPLACE_FUELHANDLING),

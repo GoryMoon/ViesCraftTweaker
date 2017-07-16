@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import se.gory_moon.vctweaker.VCTweaker;
 
@@ -88,7 +89,7 @@ public class FuelHandler {
             if ((item instanceof ItemTool && "WOOD".equals(((ItemTool)item).getToolMaterialName())) || (item instanceof ItemSword && "WOOD".equals(((ItemSword)item).getToolMaterialName())) || (item instanceof ItemHoe && "WOOD".equals(((ItemHoe)item).getMaterialName())))
                 return 2000;
 
-            return item == InitItemsVC.viesoline_pellets ? ViesCraftConfig.viesolineBurnTime * 20 * 10 : (ViesCraftConfig.outsideModFuel ? GameRegistry.getFuelValue(stack) : 0);
+            return item == InitItemsVC.VIESOLINE_PELLETS ? ViesCraftConfig.viesolineBurnTime * 20 * 10 : (ViesCraftConfig.outsideModFuel ? ForgeEventFactory.getItemBurnTime(stack) : 0);
         }
     }
 

@@ -5,6 +5,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import javax.annotation.Nullable;
 import java.util.Map;
 
+@IFMLLoadingPlugin.TransformerExclusions("se.gory_moon.vctweaker.asm")
 public class ViesCraftTweakerCore implements IFMLLoadingPlugin {
 
     @Override

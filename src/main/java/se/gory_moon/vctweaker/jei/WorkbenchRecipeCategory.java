@@ -1,5 +1,5 @@
 package se.gory_moon.vctweaker.jei;
-
+/*
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.ICraftingGridHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -33,7 +33,7 @@ public class WorkbenchRecipeCategory extends BlankRecipeCategory<IRecipeWrapper>
 
     public WorkbenchRecipeCategory(IGuiHelper guiHelper) {
         this.guiHelper = guiHelper;
-        /*ResourceLocation */location = new ResourceLocation("vc", "textures/gui/container_airship_workbench.png");
+        location = new ResourceLocation("vc", "textures/gui/container_airship_workbench.png");
         background = guiHelper.createDrawable(location, 29, 16, width, height);
         localizedName = Translator.translateToLocal("gui.jei.category.workBench");
         craftingGridHelper = guiHelper.createCraftingGridHelper(craftInputSlot1, craftOutputSlot);
@@ -91,3 +91,4 @@ public class WorkbenchRecipeCategory extends BlankRecipeCategory<IRecipeWrapper>
         guiItemStacks.set(craftOutputSlot, outputs.get(0));
     }
 }
+*/

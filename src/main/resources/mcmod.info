@@ -2,7 +2,7 @@
 {
   "modid": "vctweaker",
   "name": "ViesCraft Tweaker",
-  "description": "A mod that adds CraftTweaker functionality and modifies some things to ViesCraft",
+  "description": "A mod that modifies and fixes some things in ViesCraft",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
