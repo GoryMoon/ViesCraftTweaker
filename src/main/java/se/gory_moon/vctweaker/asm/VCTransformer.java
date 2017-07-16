@@ -89,7 +89,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             protected InsnList modifyInstructions(InsnList list) {
                 list.add(new LabelNode());
                 list.add(new VarInsnNode(ALOAD, 0));
-                list.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/client/gui/inventory/GuiContainer", FMLForgePlugin.RUNTIME_DEOBF ? "func_146276_q_ ": "drawDefaultBackground", "()V", false));
+                list.add(new MethodInsnNode(INVOKESTATIC, "se/gory_moon/vctweaker/asm/VCHooks", "drawDefaultBack", "(Lnet/minecraft/client/gui/inventory/GuiContainer;)V", false));
                 list.add(new LabelNode());
                 list.add(new VarInsnNode(ALOAD, 0));
                 list.add(new VarInsnNode(ILOAD, 1));
@@ -208,7 +208,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
         {
             MethodNode methodNode = getMethod(node);
             if (methodNode == null && action == TransformType.ADD) {
-                methodNode = new MethodNode(ASM5, ACC_PUBLIC, name, args, null, null);
+                methodNode = new MethodNode(ASM4, ACC_PUBLIC, name, args, null, null);
                 node.methods.add(methodNode);
             }
 
