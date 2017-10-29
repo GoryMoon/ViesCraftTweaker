@@ -7,6 +7,11 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
+configurations {
+    deployerJars
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -23,7 +28,7 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-version = "${mc_version}-${mod_version}.${System.getenv("BUILD_NUMBER") ?: local_build}"
+version = "${config.mc_version}-${config.mod_version}.${System.getenv("BUILD_NUMBER") ?: config.local_build}"
 group = "se.gory_moon" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ViesCraftTweaker"
 
@@ -33,7 +38,7 @@ compileJava {
 }
 
 minecraft {
-    version = "${mc_version}-${forge_version}"
+    version = "${config.mc_version}-${config.forge_version}"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -45,7 +50,7 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     replaceIn "VCTweaker.java"
-    replace "@MOD_VERSION@", mod_version
+    replace "@MOD_VERSION@", config.mod_version
 }
 
 repositories {
@@ -85,14 +90,14 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     // compile against the JEI API
-    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}:api"
+    deobfCompile "mezz.jei:jei_${config.mc_version}:${config.jei_version}:api"
     // at runtime, use the full JEI jar
-    runtime "mezz.jei:jei_${mc_version}:${jei_version}"
+    runtime "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
 }
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", mod_version + ".${System.getenv("BUILD_NUMBER") ?: local_build}"
+    inputs.property "version", config.mod_version + ".${System.getenv("BUILD_NUMBER") ?: config.local_build}"
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -100,7 +105,7 @@ processResources {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version': mod_version + ".${System.getenv("BUILD_NUMBER") ?: local_build}", 'mcversion':project.minecraft.version
+        expand 'version': config.mod_version + ".${System.getenv("BUILD_NUMBER") ?: config.local_build}", 'mcversion':project.minecraft.version
     }
         
     // copy everything else except the mcmod.info
