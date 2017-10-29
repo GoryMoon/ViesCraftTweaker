@@ -1,6 +1,7 @@
 package se.gory_moon.vctweaker.util;
 
-import net.minecraft.util.text.translation.I18n;
+
+import net.minecraft.client.resources.I18n;
 
 import java.util.IllegalFormatException;
 
@@ -9,10 +10,10 @@ public final class Translator {
     }
 
     public static String translateToLocal(String key) {
-        if (I18n.canTranslate(key)) {
-            return I18n.translateToLocal(key);
+        if (I18n.hasKey(key)) {
+            return I18n.format(key);
         } else {
-            return I18n.translateToFallback(key);
+            return key;
         }
     }
 

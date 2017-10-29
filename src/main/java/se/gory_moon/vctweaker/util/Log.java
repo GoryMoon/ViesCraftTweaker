@@ -3,11 +3,11 @@ package se.gory_moon.vctweaker.util;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import se.gory_moon.vctweaker.VCTweaker;
+import se.gory_moon.vctweaker.VCTweakerContainer;
 
 
 public class Log {
-    private static final Logger LOGGER = LogManager.getLogger(VCTweaker.MODID);
+    private static final Logger LOGGER = LogManager.getLogger(VCTweakerContainer.MODID);
 
     private Log() {
     }

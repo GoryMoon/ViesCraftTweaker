@@ -1,16 +1,16 @@
 package se.gory_moon.vctweaker.jei;
 
+import com.viesis.viescraft.api.ItemsVC;
 import com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench;
 import com.viesis.viescraft.common.tileentity.ContainerAirshipWorkbench;
 import com.viesis.viescraft.init.InitBlocksVC;
-import com.viesis.viescraft.init.InitItemsVC;
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
-import se.gory_moon.vctweaker.VCTweaker;
+import se.gory_moon.vctweaker.VCTweakerContainer;
 import se.gory_moon.vctweaker.util.Log;
 
 @JEIPlugin
@@ -26,7 +26,7 @@ public class VCTJEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
-        /*if (VCTweaker.Configs.replaceJEI) {
+        /*if (VCTweakerContainer.Configs.replaceJEI) {
             final IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
             registry.addRecipeCategories(new WorkbenchRecipeCategory(guiHelper));
         }*/
@@ -34,7 +34,7 @@ public class VCTJEIPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        if (VCTweaker.Configs.replaceJEI) {
+        if (VCTweakerContainer.Configs.replaceJEI) {
             //final IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 
             registry.addRecipeCatalyst(new ItemStack(InitBlocksVC.AIRSHIP_WORKBENCH), VanillaRecipeCategoryUid.CRAFTING);
@@ -48,8 +48,8 @@ public class VCTJEIPlugin implements IModPlugin {
             registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAirshipWorkbench.class, VanillaRecipeCategoryUid.CRAFTING, 1, 9, 10, 36);
 
             IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
-            blacklist.addIngredientToBlacklist(new ItemStack(InitItemsVC.ACHIEVEMENT_AIRSHIP));
-            blacklist.addIngredientToBlacklist(new ItemStack(InitItemsVC.ITEM_ENTITY_AIRSHIP));
+            blacklist.addIngredientToBlacklist(new ItemStack(ItemsVC.ACHIEVEMENT_AIRSHIP));
+            blacklist.addIngredientToBlacklist(new ItemStack(ItemsVC.ITEM_ENTITY_AIRSHIP));
 
             Log.info("Added ViesCraft JEI implementation");
         }

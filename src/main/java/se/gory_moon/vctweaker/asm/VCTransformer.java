@@ -22,13 +22,11 @@ import java.util.Map;
  */
 public class VCTransformer implements IClassTransformer, Opcodes {
 
-    private enum TransformType
-    {
+    private enum TransformType {
         METHOD, FIELD, INNER_CLASS, MODIFY, MAKE_PUBLIC, DELETE, ADD
     }
 
-    private enum Transformer
-    {
+    private enum Transformer {
         REPLACE_JEI("register", "(Lmezz/jei/api/IModRegistry;)V") {
 
             @Override
@@ -37,7 +35,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
                 while (node.getOpcode() != ALOAD) node = node.getNext();
 
                 LabelNode label1 = new LabelNode();
-                list.insertBefore(node, new FieldInsnNode(GETSTATIC, "se/gory_moon/vctweaker/VCTweaker$Configs", "replaceJEI", "Z"));
+                list.insertBefore(node, new FieldInsnNode(GETSTATIC, "se/gory_moon/vctweaker/VCTweakerContainer$Configs", "replaceJEI", "Z"));
                 list.insertBefore(node, new JumpInsnNode(IFNE, label1));
                 list.insertBefore(node, new LabelNode());
 
@@ -53,7 +51,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
                 }
 
                 LabelNode label2 = new LabelNode();
-                list.insertBefore(node, new FieldInsnNode(GETSTATIC, "se/gory_moon/vctweaker/VCTweaker$Configs", "replaceJEI", "Z"));
+                list.insertBefore(node, new FieldInsnNode(GETSTATIC, "se/gory_moon/vctweaker/VCTweakerContainer$Configs", "replaceJEI", "Z"));
                 list.insertBefore(node, new JumpInsnNode(IFNE, label2));
                 list.insertBefore(node, new LabelNode());
 
@@ -159,18 +157,15 @@ public class VCTransformer implements IClassTransformer, Opcodes {
         protected TransformType type;
         protected TransformType action;
 
-        Transformer(String name)
-        {
+        Transformer(String name) {
             this(name, "", TransformType.INNER_CLASS, TransformType.MAKE_PUBLIC);
         }
 
-        Transformer(String name, String args)
-        {
+        Transformer(String name, String args) {
             this(name, args, TransformType.METHOD, TransformType.MODIFY);
         }
 
-        Transformer(String name, String args, TransformType type, TransformType action)
-        {
+        Transformer(String name, String args, TransformType type, TransformType action) {
             this.name = name;
             this.args = args;
             this.type = type;
@@ -182,12 +177,10 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             return list;
         }
 
-        private static InsnList replace(InsnList list, String toReplace, String replace)
-        {
+        private static InsnList replace(InsnList list, String toReplace, String replace) {
             AbstractInsnNode node = list.getFirst();
             InsnList result = new InsnList();
-            while (node != null)
-            {
+            while (node != null) {
                 result.add(checkReplace(node, toReplace, replace));
                 node = node.getNext();
             }
@@ -204,8 +197,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             return args;
         }
 
-        protected void methodTransform(ClassNode node)
-        {
+        protected void methodTransform(ClassNode node) {
             MethodNode methodNode = getMethod(node);
             if (methodNode == null && action == TransformType.ADD) {
                 methodNode = new MethodNode(ASM4, ACC_PUBLIC, name, args, null, null);
@@ -228,13 +220,10 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             }
         }
 
-        private void fieldTransform(ClassNode node)
-        {
+        private void fieldTransform(ClassNode node) {
             FieldNode fieldNode = getField(node);
-            if (fieldNode != null)
-            {
-                switch (action)
-                {
+            if (fieldNode != null) {
+                switch (action) {
                     case MODIFY:
                         modifyField(fieldNode);
                         break;
@@ -248,18 +237,14 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             }
         }
 
-        private void modifyField(FieldNode fieldNode)
-        {
+        private void modifyField(FieldNode fieldNode) {
         }
 
 
-        private void innerClassTransform(ClassNode node)
-        {
+        private void innerClassTransform(ClassNode node) {
             InnerClassNode innerClassNode = getInnerClass(node);
-            if (innerClassNode != null)
-            {
-                switch (action)
-                {
+            if (innerClassNode != null) {
+                switch (action) {
                     case MODIFY:
                         modifyInnerClass(innerClassNode);
                         break;
@@ -273,14 +258,11 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             }
         }
 
-        private void modifyInnerClass(InnerClassNode innerClassNode)
-        {
+        private void modifyInnerClass(InnerClassNode innerClassNode) {
         }
 
-        public void transform(ClassNode node)
-        {
-            switch (this.type)
-            {
+        public void transform(ClassNode node) {
+            switch (this.type) {
                 case METHOD:
                     methodTransform(node);
                     return;
@@ -292,13 +274,10 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             }
         }
 
-        private static AbstractInsnNode checkReplace(AbstractInsnNode node, String toReplace, String replace)
-        {
-            if (node instanceof TypeInsnNode && ((TypeInsnNode)node).desc.equals(toReplace))
-            {
+        private static AbstractInsnNode checkReplace(AbstractInsnNode node, String toReplace, String replace) {
+            if (node instanceof TypeInsnNode && ((TypeInsnNode)node).desc.equals(toReplace)) {
                 return new TypeInsnNode(NEW, replace);
-            } else if (node instanceof MethodInsnNode && ((MethodInsnNode)node).owner.contains(toReplace))
-            {
+            } else if (node instanceof MethodInsnNode && ((MethodInsnNode)node).owner.contains(toReplace)) {
                 return new MethodInsnNode(node.getOpcode(), replace, ((MethodInsnNode)node).name, ((MethodInsnNode)node).desc, false);
             }
             return node;
@@ -309,44 +288,33 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             Log.info("Applied " + this + " transformer");
         }
 
-        public MethodNode getMethod(ClassNode classNode)
-        {
-            for (MethodNode method : classNode.methods)
-            {
-                if (method.name.equals(getName()) && method.desc.equals(getArgs()))
-                {
+        public MethodNode getMethod(ClassNode classNode) {
+            for (MethodNode method : classNode.methods) {
+                if (method.name.equals(getName()) && method.desc.equals(getArgs())) {
                     return method;
                 }
             }
-            for (MethodNode method : classNode.methods)
-            {
-                if (method.desc.equals(getArgs()))
-                {
+            for (MethodNode method : classNode.methods) {
+                if (method.desc.equals(getArgs())) {
                     return method;
                 }
             }
             return null;
         }
 
-        public FieldNode getField(ClassNode classNode)
-        {
-            for (FieldNode field : classNode.fields)
-            {
-                if (field.name.equals(getName()) && field.desc.equals(getArgs()))
-                {
+        public FieldNode getField(ClassNode classNode) {
+            for (FieldNode field : classNode.fields) {
+                if (field.name.equals(getName()) && field.desc.equals(getArgs())) {
                     return field;
                 }
             }
             return null;
         }
 
-        public InnerClassNode getInnerClass(ClassNode classNode)
-        {
+        public InnerClassNode getInnerClass(ClassNode classNode) {
             String name = classNode.name + "$" + getName();
-            for (InnerClassNode inner : classNode.innerClasses)
-            {
-                if (name.equals(inner.name))
-                {
+            for (InnerClassNode inner : classNode.innerClasses) {
+                if (name.equals(inner.name)) {
                     return inner;
                 }
             }
@@ -354,8 +322,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
         }
     }
 
-    private enum ClassName
-    {
+    private enum ClassName {
         //TEST("se.gory_moon.vctweaker.TestGuiContainer", Transformer.PRINT),
         GUI_WORKBENCH("com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench", Transformer.FIX_NO_GUI_TOOLTIP, Transformer.REMOVE_WORKBENCH_R_CLOSING),
         GUI_AIRSHIP_DEFAULT("com.viesis.viescraft.client.gui.airship.GuiAirshipDefaultInterface", Transformer.FIX_NO_GUI_TOOLTIP),
@@ -380,8 +347,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
         private String name;
         private Transformer[] transformers;
 
-        ClassName(String name, Transformer... transformers)
-        {
+        ClassName(String name, Transformer... transformers) {
             this.name = name;
             this.transformers = transformers;
         }
@@ -396,16 +362,14 @@ public class VCTransformer implements IClassTransformer, Opcodes {
             return transformers;
         }
 
-        public byte[] transform(byte[] bytes)
-        {
+        public byte[] transform(byte[] bytes) {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(bytes);
             classReader.accept(classNode, 0);
 
             Log.info("Applying Transformer" + (transformers.length > 1 ? "s " : " ") + "to " + getName());
 
-            for (Transformer transformer : getTransformers())
-            {
+            for (Transformer transformer : getTransformers()) {
                 transformer.transform(classNode);
             }
 
@@ -417,16 +381,14 @@ public class VCTransformer implements IClassTransformer, Opcodes {
 
     private static Map<String, ClassName> classMap = new HashMap<String, ClassName>();
 
-    static
-    {
+    static {
         for (ClassName className : ClassName.values()) classMap.put(className.getName(), className);
     }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         ClassName clazz = classMap.get(name);
-        if (clazz != null)
-        {
+        if (clazz != null) {
             basicClass = clazz.transform(basicClass);
             classMap.remove(name);
         }

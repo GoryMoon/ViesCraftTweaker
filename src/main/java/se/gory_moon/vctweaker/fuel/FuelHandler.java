@@ -9,8 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import se.gory_moon.vctweaker.VCTweaker;
+import se.gory_moon.vctweaker.VCTweakerContainer;
 
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public class FuelHandler {
     }
 
     private static boolean isItemValid(boolean flag) {
-        return (VCTweaker.Configs.isWhitelist && !flag) || (!VCTweaker.Configs.isWhitelist && flag);
+        return (VCTweakerContainer.Configs.isWhitelist && !flag) || (!VCTweakerContainer.Configs.isWhitelist && flag);
     }
 
     public static int getItemBurnTime(ItemStack stack) {
@@ -45,10 +44,10 @@ public class FuelHandler {
         } else {
             Item item = stack.getItem();
 
-            if ("minecraft".equals(item.getRegistryName().getResourceDomain()) || !VCTweaker.Configs.modedIgnoreList) {
+            if ("minecraft".equals(item.getRegistryName().getResourceDomain()) || !VCTweakerContainer.Configs.moddedIgnoreList) {
                 if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR) {
                     Block block = Block.getBlockFromItem(item);
-                    boolean flag = containsItem(block.getRegistryName().toString(), stack.getMetadata()) || (VCTweaker.Configs.woodMaterial && block.getDefaultState().getMaterial() == Material.WOOD);
+                    boolean flag = containsItem(block.getRegistryName().toString(), stack.getMetadata()) || (VCTweakerContainer.Configs.woodMaterial && block.getDefaultState().getMaterial() == Material.WOOD);
                     if (isItemValid(flag))
                         return 0;
                 } else {
