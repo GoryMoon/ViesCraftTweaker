@@ -54,12 +54,12 @@ public class VCTweakerContainer extends DummyModContainer {
 
     @Override
     public Set<ArtifactVersion> getRequirements() {
-        return Collections.singleton(VersionParser.parseVersionReference("vc@[5.0.10,)"));
+        return Collections.singleton(VersionParser.parseVersionReference("vc@[5.5.1,)"));
     }
 
     @Override
     public List<ArtifactVersion> getDependencies() {
-        return Arrays.asList(VersionParser.parseVersionReference("vc@[5.0.10,)"), VersionParser.parseVersionReference("jei"));
+        return Arrays.asList(VersionParser.parseVersionReference("vc@[5.5.1,)"), VersionParser.parseVersionReference("jei"));
     }
 
     @Subscribe

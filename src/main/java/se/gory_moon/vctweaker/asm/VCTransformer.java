@@ -325,7 +325,7 @@ public class VCTransformer implements IClassTransformer, Opcodes {
     private enum ClassName {
         //TEST("se.gory_moon.vctweaker.TestGuiContainer", Transformer.PRINT),
         GUI_WORKBENCH("com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench", Transformer.FIX_NO_GUI_TOOLTIP, Transformer.REMOVE_WORKBENCH_R_CLOSING),
-        GUI_AIRSHIP_DEFAULT("com.viesis.viescraft.client.gui.airship.GuiAirshipDefaultInterface", Transformer.FIX_NO_GUI_TOOLTIP),
+        /*GUI_AIRSHIP_DEFAULT("com.viesis.viescraft.client.gui.airship.GuiAirshipDefaultInterface", Transformer.FIX_NO_GUI_TOOLTIP),
         GUI_AIRSHIP_MUSIC_1("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg1", Transformer.FIX_NO_GUI_TOOLTIP),
         GUI_AIRSHIP_MUSIC_2("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg2", Transformer.FIX_NO_GUI_TOOLTIP),
         GUI_AIRSHIP_MUSIC_3("com.viesis.viescraft.client.gui.airship.music.GuiAirshipMusicPg3", Transformer.FIX_NO_GUI_TOOLTIP),
@@ -338,11 +338,13 @@ public class VCTransformer implements IClassTransformer, Opcodes {
         GUI_AIRSHIP_APP_2("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg2", Transformer.FIX_NO_GUI_TOOLTIP),
         GUI_AIRSHIP_APP_3("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg3", Transformer.FIX_NO_GUI_TOOLTIP),
         GUI_AIRSHIP_APP_4("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg4", Transformer.FIX_NO_GUI_TOOLTIP),
-        GUI_AIRSHIP_APP_5("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg5", Transformer.FIX_NO_GUI_TOOLTIP),
+        GUI_AIRSHIP_APP_5("com.viesis.viescraft.client.gui.airship.frames.GuiAirshipAppearancePg5", Transformer.FIX_NO_GUI_TOOLTIP),*/
         AIRSHIP_V1("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV1Core", Transformer.REPLACE_FUELHANDLING),
         AIRSHIP_V2("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV2Core", Transformer.REPLACE_FUELHANDLING),
         AIRSHIP_V3("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV3Core", Transformer.REPLACE_FUELHANDLING),
-        AIRSHIP_V4("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV4Core", Transformer.REPLACE_FUELHANDLING);
+        AIRSHIP_V4("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV4Core", Transformer.REPLACE_FUELHANDLING),
+        AIRSHIP_V5("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV5Core", Transformer.REPLACE_FUELHANDLING),
+        AIRSHIP_V6("com.viesis.viescraft.common.entity.airshipcolors.EntityAirshipV6Core", Transformer.REPLACE_FUELHANDLING);
 
         private String name;
         private Transformer[] transformers;
