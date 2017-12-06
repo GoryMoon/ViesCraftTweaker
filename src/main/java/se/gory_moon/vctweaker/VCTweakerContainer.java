@@ -54,12 +54,12 @@ public class VCTweakerContainer extends DummyModContainer {
 
     @Override
     public Set<ArtifactVersion> getRequirements() {
-        return Collections.singleton(VersionParser.parseVersionReference("vc@[5.0.10,)"));
+        return Collections.singleton(VersionParser.parseVersionReference("vc@[5.5.0,)"));
     }
 
     @Override
     public List<ArtifactVersion> getDependencies() {
-        return Arrays.asList(VersionParser.parseVersionReference("vc@[5.0.10,)"), VersionParser.parseVersionReference("jei"));
+        return Arrays.asList(VersionParser.parseVersionReference("vc@[5.5.0,)"), VersionParser.parseVersionReference("jei"));
     }
 
     @Subscribe
@@ -122,7 +122,7 @@ public class VCTweakerContainer extends DummyModContainer {
         public static boolean moddedIgnoreList = true;
 
         @Comment({"The list of items to either whitelist or blacklist when adding fuel to a airship.", "It still cares about ViesCraft fuel settings, to use vanilla/moded fuel or not.", "If you don't set a metadata for a item it automatically adds :* to the end, a wildcard for all metadata"})
-        @LangKey("gui.config.itemlist")
+        @LangKey("Item List")
         @Name("Item List")
         public static String[] itemList = {"minecraft:coal_block", "minecraft:sapling", "minecraft:stick", "minecraft:blaze_rod", "minecraft:coal",  "minecraft:lava_bucket", "vc:viesoline_pellets"};
 

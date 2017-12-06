@@ -1,17 +1,10 @@
 package se.gory_moon.vctweaker.jei;
 
-import com.viesis.viescraft.api.ItemsVC;
 import com.viesis.viescraft.client.gui.GuiTileEntityAirshipWorkbench;
-import com.viesis.viescraft.common.tileentity.ContainerAirshipWorkbench;
-import com.viesis.viescraft.init.InitBlocksVC;
 import mezz.jei.api.*;
-import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.item.ItemStack;
-import se.gory_moon.vctweaker.VCTweakerContainer;
-import se.gory_moon.vctweaker.util.Log;
 
 @JEIPlugin
 public class VCTJEIPlugin implements IModPlugin {
@@ -34,25 +27,17 @@ public class VCTJEIPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        if (VCTweakerContainer.Configs.replaceJEI) {
-            //final IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+        //final IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 
-            registry.addRecipeCatalyst(new ItemStack(InitBlocksVC.AIRSHIP_WORKBENCH), VanillaRecipeCategoryUid.CRAFTING);
+        //registry.addRecipeCatalyst(new ItemStack(InitBlocksVC.AIRSHIP_WORKBENCH), VanillaRecipeCategoryUid.CRAFTING);
 
-            /*registry.handleRecipes(ShapedOreRecipe.class, recipe -> new ShapedOreRecipeWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);
-            registry.handleRecipes(ShapedRecipes.class, recipe -> new ShapedRecipesWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);
-            registry.handleRecipes(ShapelessOreRecipe.class, recipe -> new ShapelessOreRecipeWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);
-            registry.handleRecipes(ShapelessRecipes.class, recipe -> new ShapelessRecipesWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);*/
+        /*registry.handleRecipes(ShapedOreRecipe.class, recipe -> new ShapedOreRecipeWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);
+        registry.handleRecipes(ShapedRecipes.class, recipe -> new ShapedRecipesWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);
+        registry.handleRecipes(ShapelessOreRecipe.class, recipe -> new ShapelessOreRecipeWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);
+        registry.handleRecipes(ShapelessRecipes.class, recipe -> new ShapelessRecipesWrapper(jeiHelpers, recipe), WORKBENCH_CRAFTING);*/
 
-            registry.addRecipeClickArea(GuiTileEntityAirshipWorkbench.class, 88, 32, 28, 23, VanillaRecipeCategoryUid.CRAFTING);
-            registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAirshipWorkbench.class, VanillaRecipeCategoryUid.CRAFTING, 1, 9, 10, 36);
-
-            IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
-            blacklist.addIngredientToBlacklist(new ItemStack(ItemsVC.ACHIEVEMENT_AIRSHIP));
-            blacklist.addIngredientToBlacklist(new ItemStack(ItemsVC.ITEM_ENTITY_AIRSHIP));
-
-            Log.info("Added ViesCraft JEI implementation");
-        }
+        registry.addRecipeClickArea(GuiTileEntityAirshipWorkbench.class, 88, 32, 28, 23, VanillaRecipeCategoryUid.CRAFTING);
+        //registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAirshipWorkbench.class, VanillaRecipeCategoryUid.CRAFTING, 1, 9, 10, 36);
     }
 
     @Override
